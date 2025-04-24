@@ -1,0 +1,481 @@
+
+
+
+Gun turrets on top of tank should not rotate relative to tank body!
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+ 
+ ERROR 
+ EVENT
+ EVENT CONNECT
+ EVENT RECIEVE
+ EVENT RECIEVE SPAWN
+
+
+ EVENT CONNECT
+ EVENT CONNECT
+ EVENT RECIEVE COMMAND KICK
+ EVENT DISCONNECT
+.
+
+    ERROR   
+    EVENT   CONNECT     a
+    EVENT   COMMAND     Iderik
+    EVENT   DISCONNECT  a
+
+    Connect     127.0.0.1
+    Login       
+    Command     [0](Iderik)
+
+
+
+    127.0.0.1   CONNECT
+    127.0.0.1   LOGIN       Iderik
+    Iderik      COMMAND     KICK
+
+
+ 0: 127.0.0.1     Connect.
+ 0: Slush         Authorize.
+ 1: 127.0.0.1     Connect.
+ 1: Iderik        COMMAND "kick 0 Spamming"
+ 0: Slush         DISCONNECT
+ 3
+ E: ERROR
+ S: Server      Message
+ A: Admin       Message
+
+
+
+
+std::string username
+std::string password
+std::string email
+
+unsigned int muted
+unsigned int banned
+
+unsigned char 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct Peer
+
+struct Body
+{
+    
+};
+
+struct Shape
+{
+    
+};
+
+
+
+
+
+unsigned int experience;
+unsigned char level;
+
+// There are factors/multipliers/amplifiers.
+unsigned char bodyHealthRegeneration;
+unsigned char bodyHealth;
+unsigned char bodyDamage;
+unsigned char bodySpeed;
+unsigned char bulletHealth;
+unsigned char bulletDamage;
+unsigned char bulletSpeed;
+unsigned char bulletReload;
+
+
+
+
+
+
+struct Component
+{
+    enum Bit : unsigned long int
+    {
+        NONE = 0,
+        GENERAL = 1 << 0,
+        DRAWING = 1 << 1,
+        PHYSICS = 1 << 2,
+        CONTROL = 1 << 3,
+        INTERACT = 1 << 4
+    };
+};
+
+
+
+
+
+
+
+
+Do not send "fire" packet, just send "spawn".
+
+
+unsigned char           1   0 - 255
+unsigned short int      2   0 - 65,535
+unsigned int            4   0 - 4,294,967,295
+
+uint8       1   0 - 255
+uint16      2   0 - 65,535
+uint32      4   0 - 4,294,967,295
+uint64      8   0 - 18,446,744,073,709,551,615
+
+
+enum class Typee
+{
+    TEST = 0,
+
+
+    MOVE = 9,
+    ROTATE = 9,
+
+
+
+};
+
+
+
+bool    Fire
+
+Login   -
+uint8   1 bytes     TYPE
+
+
+
+
+
+
+
+
+
+Mute
+Kick
+Ban
+ChatMessage
+StatusMessage
+ServerMessage
+CustomMessage
+    text
+    position
+    color
+    duration
+
+Spawn
+Despawn
+
+
+
+Move    - Change in position since last frame.
+uint8   1 bytes     TYPE
+float   4 bytes     X
+float   4 bytes     Y
+
+Rotate  - Change in angle since last frame.
+uint8   1 bytes     TYPE
+
+
+ATTACH  - Attach a component to an entity.
+
+DETACH  - Detach a component from an entity.
+
+
+
+
+
+
+
+
+
+struct Direction
+{
+    enum Bit: std::uint8_t
+    {
+        NONE = 0,
+        NORTH = 1 << 0,
+        EAST = 1 << 1,
+        NORTH_EAST = 1 << 2,
+        SOUTH = 1 << 3,
+        SOUTH_EAST = 1 << 4,
+        WEST = 1 << 5,
+        SOUTH_WEST = 1 << 6,
+        NORTH_WEST = 1 << 7
+    };
+};
+
+struct Action
+{
+    enum Bit: std::uint8_t
+    {
+        NONE = 0,
+        NORTH = 1 << 0,
+        EAST = 1 << 1,
+        NORTH_EAST = 1 << 2,
+        SOUTH = 1 << 3,
+        SOUTH_EAST = 1 << 4,
+        WEST = 1 << 5,
+        SOUTH_WEST = 1 << 6,
+        NORTH_WEST = 1 << 7
+    };
+};
+
+
+
+
+
+
+
+// FROM SERVER TO CLIENT
+
+
+struct Position
+{
+    float x;
+    float y;
+};
+
+struct Rotation
+{
+    float angle;
+};
+AttachComponent
+DetachComponent
+SpawnEntity
+DespawnEntity
+
+
+
+// FROM CLIENT TO SERVER
+
+
+struct Interact // Just send this and copy to entity component.
+{
+    Direction moveDirection;
+    float lookAngle;
+    Action useThing;
+};
+
+Message
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+console commands: "* for wildcard."
+info <name>
+warn <name> <reason>
+kick <name> <reason>
+ban <name> <duration> <reason>
+open <>
+close <>
+promote <name>
+demote <name>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PACKETS
+
+
+
+
+
+
+// COMPONENTS
+
+struct OtherComponent
+{
+    std::string name;
+    std::uint8_t color;
+    std::uint16_t experience;
+    std::uint8_t level;
+    
+};
+
+struct PositionComponent
+{
+    float vertical;
+    float horizontal;
+};
+
+struct RotationComponent
+{
+    float angle;
+};
+
+struct VelocityComponent
+{
+    float vertical;
+    float horizontal;
+};
+
+struct CircleComponent
+{
+    float radius;
+};
+
+
+
+
+
+
+Each X second, update packets should be sent to "all" clients.
+Send delta, then server needs to store delta?
+If you only send relative packets and a loss happens, client will sync out.
+Send absolute packet once in a while to sync clients back?
+Spawn, Attach, etc should be reliable packets.
+Position, etc should be unreliable? Well, both. Absolute packet should be reliable?
+Most packets should be maps (id and data interleaved).
+Absolute packet
+Relative packet
+AbsoluteSpawnPacket     - Send all entities
+RelativeSpawnPacket     - Send new entities.
+
+
+
+
+
+send abs pos, maybe vel too for prediction
+use parent on client too, so you dont have to send updates about every fking entity.
+
+
+
+
+
+
+
+
+struct BajsComponent
+{
+    glm::vec2 position;
+    // rotation?
+    glm::vec2 scale;
+    glm::vec2 velocity;  
+};
+
+
+
+Spawn
+Attach
+
+
+
+Auth
+Action
+
+
+
+
+
+
+
+#vinterstorm_       │09:19:39    iderik : Which kind of position should a server send to a client of an entity? currentPosition or deltaPosition?                                                                           │ BrAsS_mOnKeY
+#python             │09:22:21           : if deltaPosition, the server has to keep both currentPosition (used for physics update) and deltaPosition (used to send to client). the client will keep a matrix which is        │ Brend
+#gamedev            │                     translated using the deltaPosition.                                                                                                                                               │ Cahaan
+##OpenGL            │09:23:30    rmbeer : iderik, I do not understand. where did you get that?...                                                                                                                           │ CalamityBlue
+                    │09:23:50    iderik : if currentPosition, the server only has to keep the currentPosition and send it. the client's matrix has to be translated with -currentPosition (i think).                        │ Calinou
+                    │09:24:10           : rmbeer: get what?                                                                                                                                                                 │ cantelope
+                    │09:24:29    rmbeer : iderik, "currentPosition/deltaPosition"                                                                                                                                           │ captain_morgan
+                    │09:25:59    iderik : rmbeer: not sure what you're asking for, but currentPosition is just the current position of an entity and deltaPosition is the change in position since last frame/tick          │ Cheaterman
+                    │09:26:45           : and im asking which one of those are most common to send to a client                                                                                                              │ chrisf
+                    │09:26:54    rmbeer : I see.... Is your jargon?...                                                                                                                                                      │ codewaffle
+                    │09:27:56    rmbeer : iderik, on the other hand... It is more convenient to use according to the type of game you want to use...                                                                        │ Codrrr
+                    │09:28:31    iderik : jargon? i though current position and delta position were pretty common words                                                                                                     │ coffee
+                    │09:30:21    rmbeer : ok, but you use "currentPosition/deltaPosition", that seem more like two keywords of a class...                                                                                   │ cysm
+                    │09:30:53           : also, you forget the work in the client side...                                                                                                                                   │ dahlia
+                    │09:31:32    grouse : iderik, if the server sends the current position that implicitly lets the server correct a client's idea of where the entity is, and prevent hacking. if the client needs the     │ dav1d
+                    │                     delta to figure things out (e.g. animations), that's trivial to calculate on the client side                                                                                      │ Dave13h
+                    │09:31:32    rmbeer : the server could not only send data, but receive it from the client....                                                                                                           │ dcousens
+                    │09:31:51    iderik : rmbeer: oh sorry, its c++ naming convention. its variables. classes starts with a uppercase character :)                                                                          │ decltype
+                    │09:33:10           : rmbeer: client aint going to send any position, only input actions                                                                                                                │ DerHase
+                    │09:33:13    rmbeer : iderik, well, is what I try to say...                                                                                                                                             │ dervish
+                    │09:34:36    rmbeer : iderik, then all the position calculation work happens on the server?...                                                                                                          │ dexterfoo
+                    │09:35:15    iderik : rmbeer: yep                                                                                                                                                                       │ diarpi
+                    │09:35:53    rmbeer : iderik, then both... current and delta...                                                                                                                                         │ diegov[m]
+                    │09:36:42    iderik : grouse: yep, i guess delta is better for the client. makes it easier to deal with animation and smooth movements inbetween updates from server                                    │ diginet
+                    │09:37:50           : rmbeer: why send both?                                                                                                                                                            │ digitalw00t
+                    │09:38:29    rmbeer : Do not confuse animation with movement... the animation can be processed entirely by the client only...                                                                           │ djinni
+                    │09:39:54    rmbeer : iderik, send both for get the real time movement of the object/player...                                                                                                          │ dongs
+                    │09:40:40           : otherwise you could lose the phase....                                                                                                                                            │ dopplergange
+                    │09:40:49    iderik : well, if i should send delta, then the server needs to store both current and delta of an entity. the current is used for physics update and delta is used for sending to clients │ dos1
+                    │09:41:47           : it should feels weird to store both current and delta of each entity, but i cant see any other way how its done                                                                   │ dreda
+                    │09:41:53           : it just feels weird*                                                                                                                                                              │ duke
+                    │09:42:39    rmbeer : It seems that you are confused and you are not transmitting the correct information of how to communicate in your game. If you try to make the client send his position to the    │ dv``
+                    │                     server and then calculate the server's delta as well.... that is another method.....                                                                                              │ dvoid
+                    │09:44:36    iderik : rmbeer: yep, i barely have any experience of this. maybe i should read more about it. anyway, client is just going to send its input (for example MOVE_UP), not its position.     │ edcba
+                    │09:45:16           : if client needs to send its position, it needs to know about its velocity, mass, etc. which is totally unecessary. just let the server store those data and process it            │ edr
+                    │09:45:44           : otherwise the server has to do the same calculations too, to compare the client's result, to know if the client is cheating or not                                                │ empyreanx
+                    │09:46:06           : rmbeer: ill read some more about it, thanks for the help tho                                                                                                                      │ enigmeta
+                    │09:47:05    rmbeer : iderik, What kind of game are you trying to do? an FPS?...                                                                                                                        │ enleeten
+                    │09:49:02    iderik : rmbeer: kinda, but a very simple game                                                                                                                                             │ escherial
+                    │10:15:27 escherial : iderik: you should definitely send absolute positions; i'd compute the deltas on the client                                                                                       │ eXpl0it3r
+                    │10:16:46           : and yeah, back in the day that's how it was done, with the client just sending their input and rendering what the server sent back                                                │ explodes
+                    │10:17:17           : (you'd use the client-side deltas for interpolating between server updates so that the motion would look smooth for the player)                                                   │ faBriano
+                    │10:18:31           : client-side prediction is kind of an art; i'd definitely read up on how people are doing it these days before diving in                                                           │ faylite
+                    │10:19:46           : now that i think about it, sending the current position as well as some of the moments (velocity, acceleration, etc.) would improve the client-side prediction                    │ Ferdroid
+                    │10:26:38    iderik : escherial: hmm, that solves alot actually, thanks. also by only sending deltas, clients will sync out if packets are lost.                                                        │ freefork_afk
+                    │10:27:29 escherial : right; we refer to just using deltas as 'dead reckoning', and it's extremely prone to cumulative error 
+
+

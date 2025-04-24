@@ -1,0 +1,244 @@
+
+
+Bullet
+Missile
+Trap
+Mine
+
+
+Single, Twin, Double, Dual, Flank
+
+
+Single
+Twin
+
+Dual
+
+
+
+Cluster     Large bullet that explodes after a while.
+Fighter
+Bomber      
+
+
+
+Drone trapper
+Flank trapper
+Auto trapper
+
+
+
+I think letting server decide what should be spawned, what shape and size of it too.
+Imagine how many fking types it will exist otherwise, tons of blueprints.
+For example Auto turret as a tank (large size) and smaller Auto turrets spawned by Builder.
+Or wait... Let client have blueprint, let server send TYPE and size.
+
+Client should not know which spawns which. Server decides and tells what spawned.
+
+
+
+name
+
+struct TransformPacket
+{
+    position
+    angle
+    scale
+};
+
+
+struct SpawnPacket
+{
+    ShapeType ShapeType;
+};
+
+struct AttachPacket
+{
+    
+};
+
+
+
+
+
+
+
+
+
+
+
+ENTITIES
+
+    
+Bullet
+    Shape   Decagon
+Missile
+    Shape   Triangle
+    Size    Medium
+Drone       Square shape.
+Trap
+Mine        
+Block
+
+
+
+
+.
+
+?            bullets.
+Launcher    Launches missiles.
+Dropper     Drops traps.
+Layer       Lay mines.
+Builder     Builds turrets.
+Spawner     Spawn drones.
+
+
+
+
+
+
+Sniper
+
+
+
+
+
+
+
+
+
+
+switch(type)
+{
+    case TURRET:
+    {
+        break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct Text
+{
+    Vector position;
+    std::string data;
+};
+
+struct Position
+{
+    float x;
+    float y;
+};
+
+struct Rotation
+{
+    float a;
+};
+
+struct Apperence
+{
+    std::uint8_t color;
+    std::uint8_t radius; //?
+};
+
+struct RectangleComponent
+{
+
+};
+
+struct CircleComponent
+{
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
